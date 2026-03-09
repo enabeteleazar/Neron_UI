@@ -1,4 +1,4 @@
-<h1>Interface(/h1>
+<h1>Interface</h1>
 Néron UI est une interface homme-machine minimaliste pour un assistant IA entièrement local. Elle permet aux utilisateurs d’interagir avec Néron de manière conviviale et efficace : poser des questions à la voix ou par texte, effectuer des tâches spécifiques, obtenir des recommandations, ou générer du contenu. L’objectif est de rendre l’expérience intuitive et accessible, tout en s’appuyant sur un pipeline IA puissant tournant 100% en local — sans cloud, sans abonnement.
 Sous le capot : Ollama pour le LLM, faster-whisper pour la reconnaissance vocale, pyttsx3 pour la synthèse vocale, et une API FastAPI qui orchestre le tout en un seul processus Python.
 Pour en savoir plus et explorer le projet, rendez-vous sur neron-ai.vercel.app.
