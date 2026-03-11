@@ -1,89 +1,114 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeoFaceUI * AssistantAI</title>
-
-        <!--  Lien vers le CSS  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>NÉRON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-        <!--  SDK MapKit (si nécessaire)  -->
-    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
-    
-        <!--  Inclusion de la bibliothèque Leaflet pour la carte -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    
-        <!--  Inclusion de la police d'icônes Material Icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-
 <body>
-  <main class="phone">
 
-    <!-- Barre de statut -->
-    <section class="status-bar">
-      <div class="time-weather">
-        <div class="time" id="time">--:--</div>
-        <div class="weather">26°C</div>
+<div class="phone">
+
+  <!-- ═══════════ HOME ═══════════ -->
+  <div id="home" class="screen">
+    <div class="home-bg"></div>
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+    <div class="blush"></div>
+
+    <div class="home-body">
+      <div class="weather-row">
+        <span class="weather-icon">⛅</span>
+        <span class="weather-temp">24°</span>
       </div>
-    </section>
+      <div class="greet-1" id="greet-1">Bonsoir,</div>
+      <div class="greet-2">Néron</div>
 
-    <!-- Infos vol + carte -->
-    <section id="springboard" class="springboard">
-        <button onclick="toggleSection('springboard')">Afficher/Masquer la carte</button>
+      <div class="home-spacer"></div>
 
-      <header id="flight-info" class="flight-info">
-        <h1>Vol San Francisco → New York</h1>
-        <p>🕒 21h25 - 4h30</p>
-        <p>Terminal A, Porte A15</p>
-      </header>
-    </section>
+      <div class="home-bottom">
+        <div class="home-orb" id="home-orb"></div>
+        <span class="tap-hint">Appuyez pour commencer</span>
+      </div>
+    </div>
+  </div>
 
-    <section>
-        <header></header>
-    </section>
+  <!-- ═══════════ CHAT ═══════════ -->
+  <div id="chat" class="screen">
+    <div class="chat-bg"></div>
 
-    <!-- Zone assistant -->
-    <section class="assistant-footer">
-      <p>Comment puis-je vous aider ?</p>
-    </section>
+    <header class="chat-header">
+      <span class="brand">Néron</span>
+      <div class="header-right">
+        <div class="status-wrap">
+          <div class="s-dot" id="s-dot"></div>
+          <span id="s-lbl">connexion…</span>
+        </div>
+        <button class="back-btn" id="back-btn" aria-label="Retour">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-    
+    <div class="messages" id="msgs"></div>
 
-    <!-- Icônes principales -->
-    <nav class="icons" aria-label="Menu assistant">
-      <button class="icon" aria-label="Téléphone">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M6.62 10.79a15.053..."/>
-        </svg>
-      </button>
+    <div class="input-zone">
 
-      <button class="icon" aria-label="Messages">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M20 2H4..."/>
-        </svg>
-      </button>
+      <div class="text-row" id="text-row">
+        <div class="text-field">
+          <textarea id="txt" placeholder="Écrire un message…" rows="1"></textarea>
+        </div>
+        <button class="send-btn" id="send-btn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+          </svg>
+        </button>
+      </div>
 
-      <button class="icon" aria-label="Profil">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M12 2a10..."/>
-        </svg>
-      </button>
+      <div class="action-bar">
+        <div class="orb-wrap" id="orb" data-state="idle">
+          <div class="o-ring r1"></div>
+          <div class="o-ring r2"></div>
+          <div class="o-ring r3"></div>
+          <div class="orb-core"></div>
+          <div class="orb-mic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8"/>
+            </svg>
+          </div>
+          <span class="orb-label" id="orb-lbl">maintenir pour parler</span>
+        </div>
 
-      <button class="icon" aria-label="Assistant IA">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M12 16.5c2.69..."/>
-        </svg>
-      </button>
-    </nav>
+        <button class="kbd-btn" id="kbd-btn" aria-label="Clavier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="2" y="7" width="20" height="11" rx="2.5"/>
+            <path d="M6 11h.01M10 11h.01M14 11h.01M18 11h.01M8 15h8"/>
+          </svg>
+        </button>
+      </div>
 
-  </main>
+    </div>
 
-  <!-- JavaScript -->
-  <script src="js/script.js"></script>
-  <script src="js/time.js"></script>
-  <script src="js/toggle.js"></script>
+    <div id="toast"></div>
+  </div>
+
+  <!-- ═══════════ OVERLAYS ═══════════ -->
+  <div id="morph"></div>
+  <div id="loader">
+    <div class="loader-ring"></div>
+    <span class="loader-txt">Connexion…</span>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>

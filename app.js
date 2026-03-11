@@ -1,0 +1,356 @@
+/* ═══════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════ */
+const API = 'http://localhost:8000';
+
+/* ═══════════════════════════════════════
+   DOM
+═══════════════════════════════════════ */
+const homeEl   = document.getElementById('home');
+const chatEl   = document.getElementById('chat');
+const msgsEl   = document.getElementById('msgs');
+const txtEl    = document.getElementById('txt');
+const sendBtn  = document.getElementById('send-btn');
+const sDot     = document.getElementById('s-dot');
+const sLbl     = document.getElementById('s-lbl');
+const orbEl    = document.getElementById('orb');
+const orbLbl   = document.getElementById('orb-lbl');
+const kbdBtn   = document.getElementById('kbd-btn');
+const textRow  = document.getElementById('text-row');
+const backBtn  = document.getElementById('back-btn');
+const morphEl  = document.getElementById('morph');
+const loaderEl = document.getElementById('loader');
+const toastEl  = document.getElementById('toast');
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let busy      = false;
+let recording = false;
+let kbdOpen   = false;
+let mediaRec  = null;
+let chunks    = [];
+let toastTmr  = null;
+
+/* ═══════════════════════════════════════
+   GREETING
+═══════════════════════════════════════ */
+(function () {
+  const h = new Date().getHours();
+  const g = h < 5  ? 'Bonne nuit,' :
+            h < 12 ? 'Bonjour,'    :
+            h < 18 ? 'Bon après-midi,' : 'Bonsoir,';
+  document.getElementById('greet-1').textContent = g;
+})();
+
+/* ═══════════════════════════════════════
+   STATUS
+═══════════════════════════════════════ */
+function setStatus(s) {
+  sDot.className = 's-dot ' + s;
+  sLbl.textContent = {
+    ''         : 'en ligne',
+    offline    : 'hors ligne',
+    thinking   : 'réfléchit…',
+    connecting : 'connexion…'
+  }[s] ?? s;
+}
+
+/* ═══════════════════════════════════════
+   ORB STATE
+═══════════════════════════════════════ */
+function setOrb(s) {
+  orbEl.dataset.state = s;
+  orbLbl.textContent = {
+    idle      : 'maintenir pour parler',
+    recording : 'relâcher pour envoyer',
+    thinking  : 'néron réfléchit…'
+  }[s] ?? '';
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+function toast(msg, ms = 3500) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(() => toastEl.classList.remove('show'), ms);
+}
+
+/* ═══════════════════════════════════════
+   TRANSITION : HOME → CHAT
+═══════════════════════════════════════ */
+function goChat() {
+  /* Position du morph sur l'orbe home */
+  const phoneR = document.querySelector('.phone').getBoundingClientRect();
+  const orbR   = document.getElementById('home-orb').getBoundingClientRect();
+  const cx = orbR.left + orbR.width  / 2 - phoneR.left;
+  const cy = orbR.top  + orbR.height / 2 - phoneR.top;
+  const sz = orbR.width;
+
+  morphEl.style.width  = sz + 'px';
+  morphEl.style.height = sz + 'px';
+  morphEl.style.left   = (cx - sz / 2) + 'px';
+  morphEl.style.top    = (cy - sz / 2) + 'px';
+  morphEl.style.bottom = 'auto';
+  morphEl.classList.remove('expand', 'collapse');
+  morphEl.style.opacity = '0';
+
+  /* Fade home */
+  homeEl.classList.add('out');
+
+  /* Morph expand */
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    morphEl.classList.add('expand');
+  }));
+
+  /* Loader après 350ms */
+  setTimeout(() => loaderEl.classList.add('show'), 350);
+
+  /* Health check + révélation chat */
+  checkHealth().then(() => {
+    setTimeout(() => {
+      loaderEl.classList.remove('show');
+      morphEl.classList.remove('expand');
+      morphEl.classList.add('collapse');
+      chatEl.classList.add('show');
+      setTimeout(() => addMsg('neron', 'Bonsoir. Comment puis-je vous aider ?'), 120);
+    }, 600);
+  });
+}
+
+/* ═══════════════════════════════════════
+   TRANSITION : CHAT → HOME
+═══════════════════════════════════════ */
+function goHome() {
+  chatEl.classList.remove('show');
+  homeEl.classList.remove('out');
+  morphEl.classList.remove('expand', 'collapse');
+  morphEl.style.opacity = '0';
+  msgsEl.innerHTML = '';
+  if (kbdOpen) toggleKbd();
+  setStatus('');
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+homeEl.addEventListener('click', goChat);
+backBtn.addEventListener('click', e => { e.stopPropagation(); goHome(); });
+
+/* ═══════════════════════════════════════
+   KEYBOARD TOGGLE
+═══════════════════════════════════════ */
+kbdBtn.addEventListener('click', toggleKbd);
+
+function toggleKbd() {
+  kbdOpen = !kbdOpen;
+  kbdBtn.classList.toggle('on', kbdOpen);
+  textRow.classList.toggle('open', kbdOpen);
+  if (kbdOpen) setTimeout(() => txtEl.focus(), 300);
+  else txtEl.blur();
+}
+
+/* ═══════════════════════════════════════
+   TEXTAREA
+═══════════════════════════════════════ */
+txtEl.addEventListener('input', () => {
+  txtEl.style.height = 'auto';
+  txtEl.style.height = Math.min(txtEl.scrollHeight, 88) + 'px';
+  sendBtn.disabled = !txtEl.value.trim();
+});
+
+txtEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendText();
+  }
+});
+
+sendBtn.addEventListener('click', sendText);
+
+/* ═══════════════════════════════════════
+   MESSAGES
+═══════════════════════════════════════ */
+function scrollEnd() {
+  msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: 'smooth' });
+}
+
+function addMsg(role, text) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role;
+
+  const who = document.createElement('span');
+  who.className = 'msg-who';
+  who.textContent = role === 'user' ? 'vous' : 'néron';
+
+  const bub = document.createElement('div');
+  bub.className = 'bubble';
+  bub.textContent = text;
+
+  wrap.append(who, bub);
+  msgsEl.appendChild(wrap);
+  scrollEnd();
+
+  requestAnimationFrame(() => requestAnimationFrame(() => wrap.classList.add('in')));
+  return wrap;
+}
+
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'typing';
+  wrap.id = 'typing';
+
+  const who = document.createElement('span');
+  who.className = 'typing-who';
+  who.textContent = 'néron';
+
+  const dots = document.createElement('div');
+  dots.className = 'typing-dots';
+  dots.innerHTML = '<span></span><span></span><span></span>';
+
+  wrap.append(who, dots);
+  msgsEl.appendChild(wrap);
+  scrollEnd();
+}
+
+function hideTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+/* ═══════════════════════════════════════
+   SEND TEXT → POST /input/text
+═══════════════════════════════════════ */
+async function sendText() {
+  const text = txtEl.value.trim();
+  if (!text || busy) return;
+
+  txtEl.value = '';
+  txtEl.style.height = 'auto';
+  sendBtn.disabled = true;
+  busy = true;
+
+  addMsg('user', text);
+  showTyping();
+  setStatus('thinking');
+  setOrb('thinking');
+
+  try {
+    const res = await fetch(`${API}/input/text`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+      signal: AbortSignal.timeout(15000)
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    hideTyping();
+    addMsg('neron', data.response || '…');
+    setStatus('');
+    setOrb('idle');
+
+  } catch (err) {
+    hideTyping();
+    addMsg('error', `Connexion impossible — ${err.message}`);
+    setStatus('offline');
+    setOrb('idle');
+    toast('Backend hors ligne · localhost:8000');
+  } finally {
+    busy = false;
+    sendBtn.disabled = !txtEl.value.trim();
+    if (kbdOpen) txtEl.focus();
+  }
+}
+
+/* ═══════════════════════════════════════
+   VOICE → POST /input/audio
+═══════════════════════════════════════ */
+orbEl.addEventListener('mousedown',  startRec);
+orbEl.addEventListener('touchstart', e => { e.preventDefault(); startRec(); }, { passive: false });
+orbEl.addEventListener('mouseup',    stopRec);
+orbEl.addEventListener('mouseleave', stopRec);
+orbEl.addEventListener('touchend',   stopRec);
+orbEl.addEventListener('touchcancel',stopRec);
+
+async function startRec() {
+  if (busy || recording) return;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    chunks = [];
+    mediaRec = new MediaRecorder(stream);
+    mediaRec.ondataavailable = e => chunks.push(e.data);
+    mediaRec.onstop = sendAudio;
+    mediaRec.start();
+    recording = true;
+    setOrb('recording');
+    setStatus('thinking');
+  } catch {
+    setStatus('offline');
+    toast('Microphone inaccessible');
+  }
+}
+
+function stopRec() {
+  if (!recording || !mediaRec) return;
+  mediaRec.stop();
+  mediaRec.stream.getTracks().forEach(t => t.stop());
+  recording = false;
+  setOrb('thinking');
+}
+
+async function sendAudio() {
+  if (!chunks.length) { setOrb('idle'); return; }
+  busy = true;
+
+  const blob = new Blob(chunks, { type: 'audio/webm' });
+  const form = new FormData();
+  form.append('file', blob, 'voice.webm');
+  showTyping();
+
+  try {
+    const res = await fetch(`${API}/input/audio`, {
+      method: 'POST',
+      body: form,
+      signal: AbortSignal.timeout(20000)
+    });
+    if (!res.ok) throw new Error(`STT ${res.status}`);
+    const data = await res.json();
+    const tx = data.transcription || data.text || '';
+    if (tx) addMsg('user', '🎙 ' + tx);
+    hideTyping();
+    addMsg('neron', data.response || '…');
+    setStatus('');
+    setOrb('idle');
+  } catch (err) {
+    hideTyping();
+    addMsg('error', `Erreur audio — ${err.message}`);
+    setStatus('offline');
+    setOrb('idle');
+    toast('Backend hors ligne · localhost:8000');
+  } finally {
+    busy = false;
+  }
+}
+
+/* ═══════════════════════════════════════
+   HEALTH CHECK → GET /health
+═══════════════════════════════════════ */
+async function checkHealth() {
+  setStatus('connecting');
+  try {
+    const res = await fetch(`${API}/health`, {
+      signal: AbortSignal.timeout(4000)
+    });
+    if (res.ok) { setStatus(''); return true; }
+    setStatus('offline');
+    toast('Backend hors ligne · localhost:8000');
+    return false;
+  } catch {
+    setStatus('offline');
+    toast('Backend hors ligne · localhost:8000');
+    return false;
+  }
+}
