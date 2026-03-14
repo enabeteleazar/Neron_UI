@@ -1,26 +1,51 @@
 /* ═══════════════════════════════════════
    CONFIG
 ═══════════════════════════════════════ */
-const API = 'http://localhost:8000';
+const _CFG  = window.NERON_CONFIG || {};
+const API     = _CFG.API_URL || 'http://192.168.1.130:8000';
+const API_KEY = _CFG.API_KEY || '';
+
+function apiHeaders(extra = {}) {
+  const h = { 'Content-Type': 'application/json', ...extra };
+  if (API_KEY) h['X-API-Key'] = API_KEY;
+  return h;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
 
 /* ═══════════════════════════════════════
    DOM
 ═══════════════════════════════════════ */
-const homeEl   = document.getElementById('home');
-const chatEl   = document.getElementById('chat');
-const msgsEl   = document.getElementById('msgs');
-const txtEl    = document.getElementById('txt');
-const sendBtn  = document.getElementById('send-btn');
-const sDot     = document.getElementById('s-dot');
-const sLbl     = document.getElementById('s-lbl');
-const orbEl    = document.getElementById('orb');
-const orbLbl   = document.getElementById('orb-lbl');
-const kbdBtn   = document.getElementById('kbd-btn');
-const textRow  = document.getElementById('text-row');
-const backBtn  = document.getElementById('back-btn');
-const morphEl  = document.getElementById('morph');
-const loaderEl = document.getElementById('loader');
-const toastEl  = document.getElementById('toast');
+const homeEl        = document.getElementById('home');
+const chatEl        = document.getElementById('chat');
+const msgsEl        = document.getElementById('msgs');
+const txtEl         = document.getElementById('txt');
+const sendBtn       = document.getElementById('send-btn');
+const sDot          = document.getElementById('s-dot');
+const sLbl          = document.getElementById('s-lbl');
+const sDotDesk      = document.getElementById('s-dot-desk');
+const sLblDesk      = document.getElementById('s-lbl-desk');
+const sidebarModel  = document.getElementById('sidebar-model');
+const orbEl         = document.getElementById('orb');
+const orbLbl        = document.getElementById('orb-lbl');
+const kbdBtn        = document.getElementById('kbd-btn');
+const textRow       = document.getElementById('text-row');
+const backBtn       = document.getElementById('back-btn');
+const backBtnDesk   = document.getElementById('back-btn-desk');
+const morphEl       = document.getElementById('morph');
+const loaderEl      = document.getElementById('loader');
+const toastEl       = document.getElementById('toast');
+
+const missing = [
+  ['home',homeEl],['chat',chatEl],['msgs',msgsEl],['txt',txtEl],
+  ['send-btn',sendBtn],['s-dot',sDot],['s-lbl',sLbl],
+  ['orb',orbEl],['kbd-btn',kbdBtn],['text-row',textRow],
+  ['back-btn',backBtn],['morph',morphEl],['loader',loaderEl],['toast',toastEl]
+].filter(([,el]) => !el).map(([id]) => id);
+
+if (missing.length) { console.error('❌ DOM manquant :', missing.join(', ')); return; }
+
+console.log(`✅ Néron prêt — API : ${API}`);
 
 /* ═══════════════════════════════════════
    STATE
@@ -37,23 +62,33 @@ let toastTmr  = null;
 ═══════════════════════════════════════ */
 (function () {
   const h = new Date().getHours();
-  const g = h < 5  ? 'Bonne nuit,' :
-            h < 12 ? 'Bonjour,'    :
+  const g = h < 5  ? 'Bonne nuit,'     :
+            h < 12 ? 'Bonjour,'        :
             h < 18 ? 'Bon après-midi,' : 'Bonsoir,';
   document.getElementById('greet-1').textContent = g;
 })();
 
 /* ═══════════════════════════════════════
-   STATUS
+   STATUS — sync mobile + desktop
 ═══════════════════════════════════════ */
+const STATUS_LABELS = {
+  ''         : 'en ligne',
+  offline    : 'hors ligne',
+  thinking   : 'réfléchit…',
+  connecting : 'connexion…',
+};
+
 function setStatus(s) {
-  sDot.className = 's-dot ' + s;
-  sLbl.textContent = {
-    ''         : 'en ligne',
-    offline    : 'hors ligne',
-    thinking   : 'réfléchit…',
-    connecting : 'connexion…'
-  }[s] ?? s;
+  const cls  = 's-dot ' + s;
+  const lbl  = STATUS_LABELS[s] ?? s;
+
+  // Mobile header
+  sDot.className   = cls;
+  sLbl.textContent = lbl;
+
+  // Sidebar desktop
+  if (sDotDesk) { sDotDesk.className = cls; }
+  if (sLblDesk) { sLblDesk.textContent = lbl; }
 }
 
 /* ═══════════════════════════════════════
@@ -64,7 +99,7 @@ function setOrb(s) {
   orbLbl.textContent = {
     idle      : 'maintenir pour parler',
     recording : 'relâcher pour envoyer',
-    thinking  : 'néron réfléchit…'
+    thinking  : 'néron réfléchit…',
   }[s] ?? '';
 }
 
@@ -79,36 +114,22 @@ function toast(msg, ms = 3500) {
 }
 
 /* ═══════════════════════════════════════
-   TRANSITION : HOME → CHAT
+   TRANSITION HOME → CHAT
 ═══════════════════════════════════════ */
 function goChat() {
-  /* Position du morph sur l'orbe home */
   const phoneR = document.querySelector('.phone').getBoundingClientRect();
   const orbR   = document.getElementById('home-orb').getBoundingClientRect();
   const cx = orbR.left + orbR.width  / 2 - phoneR.left;
   const cy = orbR.top  + orbR.height / 2 - phoneR.top;
   const sz = orbR.width;
 
-  morphEl.style.width  = sz + 'px';
-  morphEl.style.height = sz + 'px';
-  morphEl.style.left   = (cx - sz / 2) + 'px';
-  morphEl.style.top    = (cy - sz / 2) + 'px';
-  morphEl.style.bottom = 'auto';
-  morphEl.classList.remove('expand', 'collapse');
-  morphEl.style.opacity = '0';
-
-  /* Fade home */
+  morphEl.style.cssText = `width:${sz}px;height:${sz}px;left:${cx-sz/2}px;top:${cy-sz/2}px;bottom:auto;opacity:0`;
+  morphEl.classList.remove('expand','collapse');
   homeEl.classList.add('out');
 
-  /* Morph expand */
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    morphEl.classList.add('expand');
-  }));
-
-  /* Loader après 350ms */
+  requestAnimationFrame(() => requestAnimationFrame(() => morphEl.classList.add('expand')));
   setTimeout(() => loaderEl.classList.add('show'), 350);
 
-  /* Health check + révélation chat */
   checkHealth().then(() => {
     setTimeout(() => {
       loaderEl.classList.remove('show');
@@ -121,12 +142,12 @@ function goChat() {
 }
 
 /* ═══════════════════════════════════════
-   TRANSITION : CHAT → HOME
+   TRANSITION CHAT → HOME
 ═══════════════════════════════════════ */
 function goHome() {
   chatEl.classList.remove('show');
   homeEl.classList.remove('out');
-  morphEl.classList.remove('expand', 'collapse');
+  morphEl.classList.remove('expand','collapse');
   morphEl.style.opacity = '0';
   msgsEl.innerHTML = '';
   if (kbdOpen) toggleKbd();
@@ -138,11 +159,12 @@ function goHome() {
 ═══════════════════════════════════════ */
 homeEl.addEventListener('click', goChat);
 backBtn.addEventListener('click', e => { e.stopPropagation(); goHome(); });
+if (backBtnDesk) backBtnDesk.addEventListener('click', goHome);
 
 /* ═══════════════════════════════════════
-   KEYBOARD TOGGLE
+   KEYBOARD TOGGLE (mobile/tablet)
 ═══════════════════════════════════════ */
-kbdBtn.addEventListener('click', toggleKbd);
+if (kbdBtn) kbdBtn.addEventListener('click', toggleKbd);
 
 function toggleKbd() {
   kbdOpen = !kbdOpen;
@@ -152,20 +174,20 @@ function toggleKbd() {
   else txtEl.blur();
 }
 
+/* Sur desktop le champ est toujours visible */
+function isDesktop() { return window.innerWidth >= 1024; }
+
 /* ═══════════════════════════════════════
    TEXTAREA
 ═══════════════════════════════════════ */
 txtEl.addEventListener('input', () => {
   txtEl.style.height = 'auto';
-  txtEl.style.height = Math.min(txtEl.scrollHeight, 88) + 'px';
+  txtEl.style.height = Math.min(txtEl.scrollHeight, 120) + 'px';
   sendBtn.disabled = !txtEl.value.trim();
 });
 
 txtEl.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendText();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendText(); }
 });
 
 sendBtn.addEventListener('click', sendText);
@@ -173,9 +195,7 @@ sendBtn.addEventListener('click', sendText);
 /* ═══════════════════════════════════════
    MESSAGES
 ═══════════════════════════════════════ */
-function scrollEnd() {
-  msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: 'smooth' });
-}
+function scrollEnd() { msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: 'smooth' }); }
 
 function addMsg(role, text) {
   const wrap = document.createElement('div');
@@ -192,24 +212,19 @@ function addMsg(role, text) {
   wrap.append(who, bub);
   msgsEl.appendChild(wrap);
   scrollEnd();
-
   requestAnimationFrame(() => requestAnimationFrame(() => wrap.classList.add('in')));
   return wrap;
 }
 
 function showTyping() {
+  if (document.getElementById('typing')) return;
   const wrap = document.createElement('div');
-  wrap.className = 'typing';
-  wrap.id = 'typing';
-
+  wrap.className = 'typing'; wrap.id = 'typing';
   const who = document.createElement('span');
-  who.className = 'typing-who';
-  who.textContent = 'néron';
-
+  who.className = 'typing-who'; who.textContent = 'néron';
   const dots = document.createElement('div');
   dots.className = 'typing-dots';
   dots.innerHTML = '<span></span><span></span><span></span>';
-
   wrap.append(who, dots);
   msgsEl.appendChild(wrap);
   scrollEnd();
@@ -240,9 +255,9 @@ async function sendText() {
   try {
     const res = await fetch(`${API}/input/text`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: apiHeaders(),
       body: JSON.stringify({ text }),
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(90000),
     });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -252,28 +267,35 @@ async function sendText() {
     setStatus('');
     setOrb('idle');
 
+    // Afficher le modèle dans la sidebar si présent
+    if (data.model && sidebarModel) {
+      sidebarModel.textContent = data.model;
+    }
+
   } catch (err) {
     hideTyping();
     addMsg('error', `Connexion impossible — ${err.message}`);
     setStatus('offline');
     setOrb('idle');
-    toast('Backend hors ligne · localhost:8000');
+    toast(`Backend hors ligne · ${API}`);
   } finally {
     busy = false;
     sendBtn.disabled = !txtEl.value.trim();
-    if (kbdOpen) txtEl.focus();
+    if (isDesktop() || kbdOpen) txtEl.focus();
   }
 }
 
 /* ═══════════════════════════════════════
    VOICE → POST /input/audio
 ═══════════════════════════════════════ */
-orbEl.addEventListener('mousedown',  startRec);
-orbEl.addEventListener('touchstart', e => { e.preventDefault(); startRec(); }, { passive: false });
-orbEl.addEventListener('mouseup',    stopRec);
-orbEl.addEventListener('mouseleave', stopRec);
-orbEl.addEventListener('touchend',   stopRec);
-orbEl.addEventListener('touchcancel',stopRec);
+if (orbEl) {
+  orbEl.addEventListener('mousedown',   startRec);
+  orbEl.addEventListener('touchstart',  e => { e.preventDefault(); startRec(); }, { passive: false });
+  orbEl.addEventListener('mouseup',     stopRec);
+  orbEl.addEventListener('mouseleave',  stopRec);
+  orbEl.addEventListener('touchend',    stopRec);
+  orbEl.addEventListener('touchcancel', stopRec);
+}
 
 async function startRec() {
   if (busy || recording) return;
@@ -287,9 +309,9 @@ async function startRec() {
     recording = true;
     setOrb('recording');
     setStatus('thinking');
-  } catch {
+  } catch (err) {
     setStatus('offline');
-    toast('Microphone inaccessible');
+    toast('Microphone inaccessible — ' + err.message);
   }
 }
 
@@ -310,11 +332,13 @@ async function sendAudio() {
   form.append('file', blob, 'voice.webm');
   showTyping();
 
+  const headers = {};
+  if (API_KEY) headers['X-API-Key'] = API_KEY;
+
   try {
     const res = await fetch(`${API}/input/audio`, {
-      method: 'POST',
-      body: form,
-      signal: AbortSignal.timeout(20000)
+      method: 'POST', headers, body: form,
+      signal: AbortSignal.timeout(30000),
     });
     if (!res.ok) throw new Error(`STT ${res.status}`);
     const data = await res.json();
@@ -324,12 +348,13 @@ async function sendAudio() {
     addMsg('neron', data.response || '…');
     setStatus('');
     setOrb('idle');
+    if (data.model && sidebarModel) sidebarModel.textContent = data.model;
   } catch (err) {
     hideTyping();
     addMsg('error', `Erreur audio — ${err.message}`);
     setStatus('offline');
     setOrb('idle');
-    toast('Backend hors ligne · localhost:8000');
+    toast(`Backend hors ligne · ${API}`);
   } finally {
     busy = false;
   }
@@ -342,15 +367,25 @@ async function checkHealth() {
   setStatus('connecting');
   try {
     const res = await fetch(`${API}/health`, {
-      signal: AbortSignal.timeout(4000)
+      headers: API_KEY ? { 'X-API-Key': API_KEY } : {},
+      signal: AbortSignal.timeout(4000),
     });
     if (res.ok) { setStatus(''); return true; }
     setStatus('offline');
-    toast('Backend hors ligne · localhost:8000');
+    toast(`Backend hors ligne · ${API}`);
     return false;
   } catch {
     setStatus('offline');
-    toast('Backend hors ligne · localhost:8000');
+    toast(`Backend hors ligne · ${API}`);
     return false;
   }
 }
+
+/* Focus auto sur desktop au démarrage du chat */
+chatEl.addEventListener('transitionend', () => {
+  if (chatEl.classList.contains('show') && isDesktop()) {
+    txtEl.focus();
+  }
+});
+
+}); // DOMContentLoaded
