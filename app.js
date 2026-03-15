@@ -2,7 +2,7 @@
    CONFIG
 ═══════════════════════════════════════ */
 const _CFG  = window.NERON_CONFIG || {};
-const API     = _CFG.API_URL || 'http://192.168.1.130:8000';
+const API     = _CFG.API_URL || 'http://192.168.1.130:8010';
 const API_KEY = _CFG.API_KEY || '';
 
 function apiHeaders(extra = {}) {
@@ -48,6 +48,49 @@ if (missing.length) { console.error('❌ DOM manquant :', missing.join(', ')); r
 console.log(`✅ Néron prêt — API : ${API}`);
 
 /* ═══════════════════════════════════════
+   TTS — Web Speech API (voix natives)
+═══════════════════════════════════════ */
+const _tts = window.speechSynthesis;
+let _ttsVoice = null;
+
+function initTTSVoice() {
+  if (!_tts) return;
+  const voices = _tts.getVoices();
+  _ttsVoice = voices.find(v => v.lang.startsWith('fr') && !v.name.includes('Compact'))
+           || voices.find(v => v.lang.startsWith('fr'))
+           || null;
+  if (_ttsVoice) console.log(`🔊 Voix TTS : ${_ttsVoice.name}`);
+}
+
+if (_tts) {
+  initTTSVoice();
+  _tts.onvoiceschanged = initTTSVoice;
+}
+
+function speak(text) {
+  if (!_tts || !text) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    _tts.cancel();
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = 'fr-FR';
+    utt.rate  = 1.0;
+    utt.pitch = 1.0;
+
+    if (_ttsVoice) utt.voice = _ttsVoice;
+
+    setOrb('speaking');
+    setStatus('speaking');
+
+    utt.onend = () => { setOrb('idle'); setStatus(''); resolve(); };
+    utt.onerror = (e) => { console.warn('TTS error:', e); setOrb('idle'); setStatus(''); resolve(); };
+
+    _tts.speak(utt);
+  });
+}
+
+/* ═══════════════════════════════════════
    STATE
 ═══════════════════════════════════════ */
 let busy      = false;
@@ -69,26 +112,23 @@ let toastTmr  = null;
 })();
 
 /* ═══════════════════════════════════════
-   STATUS — sync mobile + desktop
+   STATUS
 ═══════════════════════════════════════ */
 const STATUS_LABELS = {
   ''         : 'en ligne',
   offline    : 'hors ligne',
   thinking   : 'réfléchit…',
   connecting : 'connexion…',
+  speaking   : 'parle…',
 };
 
 function setStatus(s) {
-  const cls  = 's-dot ' + s;
-  const lbl  = STATUS_LABELS[s] ?? s;
-
-  // Mobile header
+  const cls = 's-dot ' + s;
+  const lbl = STATUS_LABELS[s] ?? s;
   sDot.className   = cls;
   sLbl.textContent = lbl;
-
-  // Sidebar desktop
-  if (sDotDesk) { sDotDesk.className = cls; }
-  if (sLblDesk) { sLblDesk.textContent = lbl; }
+  if (sDotDesk) sDotDesk.className   = cls;
+  if (sLblDesk) sLblDesk.textContent = lbl;
 }
 
 /* ═══════════════════════════════════════
@@ -100,6 +140,7 @@ function setOrb(s) {
     idle      : 'maintenir pour parler',
     recording : 'relâcher pour envoyer',
     thinking  : 'néron réfléchit…',
+    speaking  : 'néron parle…',
   }[s] ?? '';
 }
 
@@ -136,7 +177,11 @@ function goChat() {
       morphEl.classList.remove('expand');
       morphEl.classList.add('collapse');
       chatEl.classList.add('show');
-      setTimeout(() => addMsg('neron', 'Bonsoir. Comment puis-je vous aider ?'), 120);
+      setTimeout(() => {
+        const greeting = 'Bonsoir. Comment puis-je vous aider ?';
+        addMsg('neron', greeting);
+        speak(greeting);
+      }, 120);
     }, 600);
   });
 }
@@ -145,6 +190,7 @@ function goChat() {
    TRANSITION CHAT → HOME
 ═══════════════════════════════════════ */
 function goHome() {
+  _tts && _tts.cancel();
   chatEl.classList.remove('show');
   homeEl.classList.remove('out');
   morphEl.classList.remove('expand','collapse');
@@ -162,7 +208,7 @@ backBtn.addEventListener('click', e => { e.stopPropagation(); goHome(); });
 if (backBtnDesk) backBtnDesk.addEventListener('click', goHome);
 
 /* ═══════════════════════════════════════
-   KEYBOARD TOGGLE (mobile/tablet)
+   KEYBOARD TOGGLE
 ═══════════════════════════════════════ */
 if (kbdBtn) kbdBtn.addEventListener('click', toggleKbd);
 
@@ -174,7 +220,6 @@ function toggleKbd() {
   else txtEl.blur();
 }
 
-/* Sur desktop le champ est toujours visible */
 function isDesktop() { return window.innerWidth >= 1024; }
 
 /* ═══════════════════════════════════════
@@ -200,15 +245,12 @@ function scrollEnd() { msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: 'sm
 function addMsg(role, text) {
   const wrap = document.createElement('div');
   wrap.className = 'msg ' + role;
-
   const who = document.createElement('span');
   who.className = 'msg-who';
   who.textContent = role === 'user' ? 'vous' : 'néron';
-
   const bub = document.createElement('div');
   bub.className = 'bubble';
   bub.textContent = text;
-
   wrap.append(who, bub);
   msgsEl.appendChild(wrap);
   scrollEnd();
@@ -236,7 +278,7 @@ function hideTyping() {
 }
 
 /* ═══════════════════════════════════════
-   SEND TEXT → POST /input/text
+   SEND TEXT → POST /input/text + TTS natif
 ═══════════════════════════════════════ */
 async function sendText() {
   const text = txtEl.value.trim();
@@ -263,14 +305,10 @@ async function sendText() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     hideTyping();
-    addMsg('neron', data.response || '…');
-    setStatus('');
-    setOrb('idle');
-
-    // Afficher le modèle dans la sidebar si présent
-    if (data.model && sidebarModel) {
-      sidebarModel.textContent = data.model;
-    }
+    const response = data.response || '…';
+    addMsg('neron', response);
+    if (data.model && sidebarModel) sidebarModel.textContent = data.model;
+    await speak(response);
 
   } catch (err) {
     hideTyping();
@@ -286,7 +324,7 @@ async function sendText() {
 }
 
 /* ═══════════════════════════════════════
-   VOICE → POST /input/audio
+   VOICE — STT via /input/audio + TTS natif
 ═══════════════════════════════════════ */
 if (orbEl) {
   orbEl.addEventListener('mousedown',   startRec);
@@ -304,11 +342,10 @@ async function startRec() {
     chunks = [];
     mediaRec = new MediaRecorder(stream);
     mediaRec.ondataavailable = e => chunks.push(e.data);
-    mediaRec.onstop = sendAudio;
+    mediaRec.onstop = sendVoice;
     mediaRec.start();
     recording = true;
     setOrb('recording');
-    setStatus('thinking');
   } catch (err) {
     setStatus('offline');
     toast('Microphone inaccessible — ' + err.message);
@@ -321,10 +358,11 @@ function stopRec() {
   mediaRec.stream.getTracks().forEach(t => t.stop());
   recording = false;
   setOrb('thinking');
+  setStatus('thinking');
 }
 
-async function sendAudio() {
-  if (!chunks.length) { setOrb('idle'); return; }
+async function sendVoice() {
+  if (!chunks.length) { setOrb('idle'); setStatus(''); return; }
   busy = true;
 
   const blob = new Blob(chunks, { type: 'audio/webm' });
@@ -336,32 +374,43 @@ async function sendAudio() {
   if (API_KEY) headers['X-API-Key'] = API_KEY;
 
   try {
-    const res = await fetch(`${API}/input/audio`, {
-      method: 'POST', headers, body: form,
+    const sttRes = await fetch(`${API}/input/audio`, {
+      method: 'POST',
+      headers,
+      body: form,
       signal: AbortSignal.timeout(30000),
     });
-    if (!res.ok) throw new Error(`STT ${res.status}`);
-    const data = await res.json();
-    const tx = data.transcription || data.text || '';
-    if (tx) addMsg('user', '🎙 ' + tx);
+
+    if (!sttRes.ok) throw new Error(`STT ${sttRes.status}`);
+    const sttData = await sttRes.json();
+
+    const transcription = sttData.transcription || sttData.text || sttData.content || '';
+    const response      = sttData.response || '';
+
+    if (transcription) addMsg('user', '🎙 ' + transcription);
     hideTyping();
-    addMsg('neron', data.response || '…');
-    setStatus('');
-    setOrb('idle');
-    if (data.model && sidebarModel) sidebarModel.textContent = data.model;
+
+    if (response) {
+      addMsg('neron', response);
+      if (sttData.model && sidebarModel) sidebarModel.textContent = sttData.model;
+      await speak(response);
+    }
+
   } catch (err) {
     hideTyping();
-    addMsg('error', `Erreur audio — ${err.message}`);
+    addMsg('error', `Erreur vocal — ${err.message}`);
     setStatus('offline');
     setOrb('idle');
-    toast(`Backend hors ligne · ${API}`);
+    toast(`Erreur pipeline vocal · ${err.message}`);
   } finally {
     busy = false;
+    setOrb('idle');
+    setStatus('');
   }
 }
 
 /* ═══════════════════════════════════════
-   HEALTH CHECK → GET /health
+   HEALTH CHECK
 ═══════════════════════════════════════ */
 async function checkHealth() {
   setStatus('connecting');
@@ -381,11 +430,9 @@ async function checkHealth() {
   }
 }
 
-/* Focus auto sur desktop au démarrage du chat */
+/* Focus auto sur desktop */
 chatEl.addEventListener('transitionend', () => {
-  if (chatEl.classList.contains('show') && isDesktop()) {
-    txtEl.focus();
-  }
+  if (chatEl.classList.contains('show') && isDesktop()) txtEl.focus();
 });
 
 }); // DOMContentLoaded
