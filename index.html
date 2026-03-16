@@ -9,10 +9,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="phone">
-
-  <!-- ═══════════ HOME ═══════════ -->
   <div id="home" class="screen">
     <div class="home-bg"></div>
     <div class="blob b1"></div>
@@ -20,29 +17,34 @@
     <div class="blob b3"></div>
     <div class="blob b4"></div>
     <div class="blush"></div>
-
     <div class="home-body">
       <div class="weather-row">
-        <span class="weather-icon">⛅</span>
-        <span class="weather-temp">24°</span>
+        <span class="weather-icon" id="weather-icon">⛅</span>
+        <div class="weather-info">
+          <span class="weather-temp" id="weather-temp">—°</span>
+          <span class="weather-desc" id="weather-desc"></span>
+        </div>
       </div>
       <div class="greet-1" id="greet-1">Bonsoir,</div>
-      <div class="greet-2">Néron</div>
-
+      <div class="greet-2">Eleazar</div>
+      <div class="home-widget" id="home-widget">
+        <div class="widget-inner" id="widget-inner">
+          <div class="widget-loader">
+            <div class="widget-dot"></div>
+            <div class="widget-dot"></div>
+            <div class="widget-dot"></div>
+          </div>
+        </div>
+      </div>
       <div class="home-spacer"></div>
-
       <div class="home-bottom">
         <div class="home-orb" id="home-orb"></div>
         <span class="tap-hint">Appuyez pour commencer</span>
       </div>
     </div>
   </div>
-
-  <!-- ═══════════ CHAT ═══════════ -->
   <div id="chat" class="screen">
     <div class="chat-bg"></div>
-
-    <!-- Sidebar desktop uniquement -->
     <aside class="chat-sidebar">
       <span class="sidebar-brand">Néron</span>
       <div class="sidebar-status">
@@ -62,11 +64,7 @@
         Accueil
       </button>
     </aside>
-
-    <!-- Zone principale -->
     <div class="chat-main">
-
-      <!-- Header mobile/tablet -->
       <header class="chat-header">
         <span class="brand">Néron</span>
         <div class="header-right">
@@ -81,24 +79,31 @@
           </button>
         </div>
       </header>
-
       <div class="messages" id="msgs"></div>
-
       <div class="input-zone">
-
         <div class="text-row" id="text-row">
           <div class="text-field">
             <textarea id="txt" placeholder="Écrire un message…" rows="1"></textarea>
           </div>
-          <button class="send-btn" id="send-btn" disabled>
+          <div class="orb-wrap orb-inline" id="orb-inline" data-state="idle">
+            <div class="o-ring r1"></div>
+            <div class="o-ring r2"></div>
+            <div class="o-ring r3"></div>
+            <div class="orb-core"></div>
+            <div class="orb-mic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8"/>
+              </svg>
+            </div>
+          </div>
+          <button class="send-btn" id="send-btn" style="display:none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
             </svg>
           </button>
         </div>
-
-        <!-- Action bar mobile/tablet uniquement -->
-        <div class="action-bar">
+        <div class="action-bar" id="action-bar">
           <div class="orb-wrap" id="orb" data-state="idle">
             <div class="o-ring r1"></div>
             <div class="o-ring r2"></div>
@@ -112,7 +117,6 @@
             </div>
             <span class="orb-label" id="orb-lbl">maintenir pour parler</span>
           </div>
-
           <button class="kbd-btn" id="kbd-btn" aria-label="Clavier">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
               <rect x="2" y="7" width="20" height="11" rx="2.5"/>
@@ -120,24 +124,16 @@
             </svg>
           </button>
         </div>
-
       </div>
-
-    </div><!-- /chat-main -->
-  </div><!-- /chat -->
-
-  <!-- ═══════════ OVERLAYS ═══════════ -->
+    </div>
+  </div>
   <div id="morph"></div>
   <div id="loader">
     <div class="loader-ring"></div>
     <span class="loader-txt">Connexion…</span>
   </div>
-
-</div><!-- /phone -->
-
+</div>
 <div id="toast"></div>
-
-<!-- Config chargée en premier -->
 <script src="config.js"></script>
 <script src="app.js"></script>
 </body>
