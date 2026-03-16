@@ -44,7 +44,7 @@ const WEATHER_ICONS={113:'☀️',116:'⛅',119:'☁️',122:'☁️',143:'🌫'
 
 async function loadWeather(){
   try{
-    const res=await fetch('https://wttr.in/?format=j1',{signal:AbortSignal.timeout(5000)});
+    const res=await fetch('https://wttr.in/Troyes?format=j1',{signal:AbortSignal.timeout(5000)});
     if(!res.ok)throw new Error();
     const data=await res.json();
     const cur=data.current_condition[0];
