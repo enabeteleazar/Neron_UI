@@ -189,3 +189,108 @@ textarea::placeholder { color: rgba(255,255,255,0.2); }
 .kbd-btn { position: absolute; right: 0; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 14px; border: 1px solid var(--cbdr); background: rgba(255,255,255,0.04); color: var(--cdim); cursor: pointer; transition: all 0.2s; }
 .kbd-btn svg { width: 20px; height: 20px; }
 .kbd-btn:hover { background: rgba(255,255,255,0.08); color: rgba(238,237,245,0.6); }
+
+/* ─── Persona Panel ────────────────────────────────────────── */
+.persona-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.persona-panel.loaded  { opacity: 1; }
+.persona-panel.offline { opacity: 0.3; }
+
+.persona-title {
+  font-size: 0.52rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(238,237,245,0.2);
+  margin-bottom: 2px;
+}
+
+.persona-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.persona-label {
+  font-size: 0.60rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(238,237,245,0.3);
+}
+
+.persona-val {
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: rgba(238,237,245,0.55);
+  letter-spacing: 0.04em;
+}
+
+/* Mood tag — couleur selon état */
+.persona-tag {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.mood-neutre  {
+  color: rgba(167,139,250,0.8);
+  background: rgba(139,111,212,0.12);
+  border: 1px solid rgba(139,111,212,0.18);
+}
+.mood-positif {
+  color: rgba(110,231,183,0.9);
+  background: rgba(16,185,129,0.10);
+  border: 1px solid rgba(16,185,129,0.16);
+}
+.mood-focus {
+  color: rgba(96,165,250,0.9);
+  background: rgba(59,130,246,0.10);
+  border: 1px solid rgba(59,130,246,0.16);
+}
+
+/* ─── Mobile mood badge (header) ──────────────────────────── */
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mood-badge {
+  font-size: 0.52rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+.mood-badge.loaded { opacity: 1; }
+
+.mood-badge.mood-neutre  {
+  color: rgba(167,139,250,0.85);
+  background: rgba(139,111,212,0.14);
+  border: 1px solid rgba(139,111,212,0.20);
+}
+.mood-badge.mood-positif {
+  color: rgba(110,231,183,0.9);
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.18);
+}
+.mood-badge.mood-focus {
+  color: rgba(96,165,250,0.9);
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.18);
+}

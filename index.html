@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <base href="/app/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>NÉRON</title>
@@ -10,6 +11,8 @@
 </head>
 <body>
 <div class="phone">
+
+  <!-- ── HOME ── -->
   <div id="home" class="screen">
     <div class="home-bg"></div>
     <div class="blob b1"></div>
@@ -43,8 +46,12 @@
       </div>
     </div>
   </div>
+
+  <!-- ── CHAT ── -->
   <div id="chat" class="screen">
     <div class="chat-bg"></div>
+
+    <!-- Sidebar desktop -->
     <aside class="chat-sidebar">
       <span class="sidebar-brand">Néron</span>
       <div class="sidebar-status">
@@ -52,9 +59,34 @@
         <span id="s-lbl-desk">connexion…</span>
       </div>
       <div class="sidebar-divider"></div>
+
+      <!-- Persona panel -->
+      <div id="persona-panel" class="persona-panel">
+        <div class="persona-title">Personnalité active</div>
+        <div class="persona-row">
+          <span class="persona-label">Humeur</span>
+          <span class="persona-tag mood-neutre" id="persona-mood">○ Neutre</span>
+        </div>
+        <div class="persona-row">
+          <span class="persona-label">Énergie</span>
+          <span class="persona-val" id="persona-energy">◇ Normal</span>
+        </div>
+        <div class="persona-row">
+          <span class="persona-label">Ton</span>
+          <span class="persona-val" id="persona-tone">technique</span>
+        </div>
+        <div class="persona-row">
+          <span class="persona-label">Détail</span>
+          <span class="persona-val" id="persona-verbosity">Équilibré</span>
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
       <div>
         <div class="sidebar-label">Modèle actif</div>
-        <div class="sidebar-model" id="sidebar-model"><img src="avatar.png" width="180px" alt="Néron"></div>
+        <div class="sidebar-model" id="sidebar-model">
+          <img src="avatar.png" width="180px" alt="Néron">
+        </div>
       </div>
       <div class="sidebar-spacer"></div>
       <button class="sidebar-back" id="back-btn-desk">
@@ -64,9 +96,14 @@
         Accueil
       </button>
     </aside>
+
+    <!-- Chat main -->
     <div class="chat-main">
       <header class="chat-header">
-        <span class="brand">Néron</span>
+        <div class="brand-wrap">
+          <span class="brand">Néron</span>
+          <span class="mood-badge" id="mood-badge"></span>
+        </div>
         <div class="header-right">
           <div class="status-wrap">
             <div class="s-dot" id="s-dot"></div>
@@ -86,9 +123,7 @@
             <textarea id="txt" placeholder="Écrire un message…" rows="1"></textarea>
           </div>
           <div class="orb-wrap orb-inline" id="orb-inline" data-state="idle">
-            <div class="o-ring r1"></div>
-            <div class="o-ring r2"></div>
-            <div class="o-ring r3"></div>
+            <div class="o-ring r1"></div><div class="o-ring r2"></div><div class="o-ring r3"></div>
             <div class="orb-core"></div>
             <div class="orb-mic">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -105,9 +140,7 @@
         </div>
         <div class="action-bar" id="action-bar">
           <div class="orb-wrap" id="orb" data-state="idle">
-            <div class="o-ring r1"></div>
-            <div class="o-ring r2"></div>
-            <div class="o-ring r3"></div>
+            <div class="o-ring r1"></div><div class="o-ring r2"></div><div class="o-ring r3"></div>
             <div class="orb-core"></div>
             <div class="orb-mic">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -127,6 +160,7 @@
       </div>
     </div>
   </div>
+
   <div id="morph"></div>
   <div id="loader">
     <div class="loader-ring"></div>
