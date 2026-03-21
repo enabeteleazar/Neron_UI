@@ -282,8 +282,7 @@ function addMsg(role, text) {
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/^- /gm, '• ')
-    .replace(/
-/g, '<br>');
+    .replace(/\n/g, '<br>');
   wrap.append(who, bub); msgsEl.appendChild(wrap); scrollEnd();
   requestAnimationFrame(() => requestAnimationFrame(() => wrap.classList.add('in')));
   return wrap;
@@ -368,43 +367,21 @@ async function sendText() {
   let fullResponse = '';
 
   try {
-    const res = await fetch(`${API}/input/stream`, {
+    const res = await fetch(`${API}/input/text`, {
       method: 'POST',
       headers: apiHeaders(),
       body: JSON.stringify({ text }),
-      signal: AbortSignal.timeout(90000),
+      signal: AbortSignal.timeout(420000),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    const reader  = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-
-      for (const line of lines) {
-        if (!line.startsWith('data:')) continue;
-        try {
-          const json = JSON.parse(line.slice(5).trim());
-          if (json.token) {
-            fullResponse += json.token;
-            bub.textContent = fullResponse;
-            scrollEnd();
-          }
-          if (json.done && fullResponse) {
-            setStatus(''); setOrb('idle');
-            // Refresh persona after each LLM response (mood/energy can change)
-            loadPersonaState();
-            await speak(fullResponse);
-          }
-        } catch {}
-      }
-    }
+    const data = await res.json();
+    fullResponse = data.response || '';
+    bub.textContent = fullResponse;
+    scrollEnd();
+    setStatus(''); setOrb('idle');
+    loadPersonaState();
+    await speak(fullResponse);
   } catch (err) {
     bub.textContent = `Connexion impossible — ${err.message}`;
     wrap.className = 'msg error';
