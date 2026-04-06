@@ -5,11 +5,13 @@ import type { ChatMessage } from "@/lib/types";
 
 interface ChatViewProps {
   messages: ChatMessage[];
+  isStreaming: boolean;
 }
 
-export default function ChatView({ messages }: ChatViewProps) {
+export default function ChatView({ messages, isStreaming }: ChatViewProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll vers le bas à chaque nouveau token
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -30,6 +32,12 @@ export default function ChatView({ messages }: ChatViewProps) {
       {messages.map((msg) => (
         <MessageBubble key={msg.id} message={msg} />
       ))}
+
+      {/* Indicateur typing pendant le streaming */}
+      {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
+        <TypingIndicator />
+      )}
+
       <div ref={bottomRef} />
     </div>
   );
@@ -39,14 +47,16 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
 
   return (
-    <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"} fade-in`}>
+    <div
+      className={`flex w-full ${isUser ? "justify-end" : "justify-start"} fade-in`}
+    >
       <div
         className={`max-w-[82%] rounded-2xl px-3.5 py-2.5 ${
           isUser
             ? "rounded-tr-sm bg-cyan-500/20 text-white/90"
             : message.error
-            ? "rounded-tl-sm border border-red-500/20 bg-red-500/10 text-red-400"
-            : "rounded-tl-sm border border-white/[0.06] bg-white/[0.04] text-white/80"
+              ? "rounded-tl-sm border border-red-500/20 bg-red-500/10 text-red-400"
+              : "rounded-tl-sm border border-white/[0.06] bg-white/[0.04] text-white/80"
         }`}
       >
         <p className="text-[13px] leading-relaxed whitespace-pre-wrap break-words">
@@ -60,7 +70,10 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             isUser ? "text-right text-cyan-400/40" : "text-white/20"
           }`}
         >
-          {message.timestamp.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+          {message.timestamp.toLocaleTimeString("fr-FR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
           {message.streaming && " · écriture…"}
         </p>
       </div>
@@ -68,9 +81,31 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   );
 }
 
+function TypingIndicator() {
+  return (
+    <div className="flex items-center gap-1.5 px-1 fade-in">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="h-1.5 w-1.5 rounded-full bg-cyan-400/40"
+          style={{
+            animation: `neron-pulse 1.2s ease-in-out ${i * 0.2}s infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function NeuralIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <circle cx="12" cy="12" r="2.5" fill="rgba(34,211,238,0.25)" />
       <circle cx="12" cy="12" r="5" stroke="rgba(34,211,238,0.1)" strokeWidth="1" />
       <circle cx="12" cy="12" r="8.5" stroke="rgba(34,211,238,0.05)" strokeWidth="1" />
