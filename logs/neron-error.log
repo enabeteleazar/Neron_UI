@@ -1,0 +1,400 @@
+2026-04-06 15:14:04:  ⨯ Failed to start server
+2026-04-06 15:14:04: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:04:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:04:     at new Promise (<anonymous>) {
+2026-04-06 15:14:04:   code: 'EADDRINUSE',
+2026-04-06 15:14:04:   errno: -98,
+2026-04-06 15:14:04:   syscall: 'listen',
+2026-04-06 15:14:04:   address: '::',
+2026-04-06 15:14:04:   port: 3000
+2026-04-06 15:14:04: }
+2026-04-06 15:14:04:  ⨯ Failed to start server
+2026-04-06 15:14:04: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:04:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:04:     at new Promise (<anonymous>) {
+2026-04-06 15:14:04:   code: 'EADDRINUSE',
+2026-04-06 15:14:04:   errno: -98,
+2026-04-06 15:14:04:   syscall: 'listen',
+2026-04-06 15:14:04:   address: '::',
+2026-04-06 15:14:04:   port: 3000
+2026-04-06 15:14:04: }
+2026-04-06 15:14:05:  ⨯ Failed to start server
+2026-04-06 15:14:05: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:05:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:05:     at new Promise (<anonymous>) {
+2026-04-06 15:14:05:   code: 'EADDRINUSE',
+2026-04-06 15:14:05:   errno: -98,
+2026-04-06 15:14:05:   syscall: 'listen',
+2026-04-06 15:14:05:   address: '::',
+2026-04-06 15:14:05:   port: 3000
+2026-04-06 15:14:05: }
+2026-04-06 15:14:05:  ⨯ Failed to start server
+2026-04-06 15:14:05: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:05:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:05:     at new Promise (<anonymous>) {
+2026-04-06 15:14:05:   code: 'EADDRINUSE',
+2026-04-06 15:14:05:   errno: -98,
+2026-04-06 15:14:05:   syscall: 'listen',
+2026-04-06 15:14:05:   address: '::',
+2026-04-06 15:14:05:   port: 3000
+2026-04-06 15:14:05: }
+2026-04-06 15:14:06:  ⨯ Failed to start server
+2026-04-06 15:14:06: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:06:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:06:     at new Promise (<anonymous>) {
+2026-04-06 15:14:06:   code: 'EADDRINUSE',
+2026-04-06 15:14:06:   errno: -98,
+2026-04-06 15:14:06:   syscall: 'listen',
+2026-04-06 15:14:06:   address: '::',
+2026-04-06 15:14:06:   port: 3000
+2026-04-06 15:14:06: }
+2026-04-06 15:14:07:  ⨯ Failed to start server
+2026-04-06 15:14:07: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:07:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:07:     at new Promise (<anonymous>) {
+2026-04-06 15:14:07:   code: 'EADDRINUSE',
+2026-04-06 15:14:07:   errno: -98,
+2026-04-06 15:14:07:   syscall: 'listen',
+2026-04-06 15:14:07:   address: '::',
+2026-04-06 15:14:07:   port: 3000
+2026-04-06 15:14:07: }
+2026-04-06 15:14:07:  ⨯ Failed to start server
+2026-04-06 15:14:07: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:07:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:07:     at new Promise (<anonymous>) {
+2026-04-06 15:14:07:   code: 'EADDRINUSE',
+2026-04-06 15:14:07:   errno: -98,
+2026-04-06 15:14:07:   syscall: 'listen',
+2026-04-06 15:14:07:   address: '::',
+2026-04-06 15:14:07:   port: 3000
+2026-04-06 15:14:07: }
+2026-04-06 15:14:08:  ⨯ Failed to start server
+2026-04-06 15:14:08: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:08:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:08:     at new Promise (<anonymous>) {
+2026-04-06 15:14:08:   code: 'EADDRINUSE',
+2026-04-06 15:14:08:   errno: -98,
+2026-04-06 15:14:08:   syscall: 'listen',
+2026-04-06 15:14:08:   address: '::',
+2026-04-06 15:14:08:   port: 3000
+2026-04-06 15:14:08: }
+2026-04-06 15:14:08:  ⨯ Failed to start server
+2026-04-06 15:14:08: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:08:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:08:     at new Promise (<anonymous>) {
+2026-04-06 15:14:08:   code: 'EADDRINUSE',
+2026-04-06 15:14:08:   errno: -98,
+2026-04-06 15:14:08:   syscall: 'listen',
+2026-04-06 15:14:08:   address: '::',
+2026-04-06 15:14:08:   port: 3000
+2026-04-06 15:14:08: }
+2026-04-06 15:14:09:  ⨯ Failed to start server
+2026-04-06 15:14:09: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:14:09:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:14:09:     at new Promise (<anonymous>) {
+2026-04-06 15:14:09:   code: 'EADDRINUSE',
+2026-04-06 15:14:09:   errno: -98,
+2026-04-06 15:14:09:   syscall: 'listen',
+2026-04-06 15:14:09:   address: '::',
+2026-04-06 15:14:09:   port: 3000
+2026-04-06 15:14:09: }
+2026-04-06 15:15:57:  ⨯ Failed to start server
+2026-04-06 15:15:57: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:15:57:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:15:57:     at new Promise (<anonymous>) {
+2026-04-06 15:15:57:   code: 'EADDRINUSE',
+2026-04-06 15:15:57:   errno: -98,
+2026-04-06 15:15:57:   syscall: 'listen',
+2026-04-06 15:15:57:   address: '::',
+2026-04-06 15:15:57:   port: 3000
+2026-04-06 15:15:57: }
+2026-04-06 15:15:57:  ⨯ Failed to start server
+2026-04-06 15:15:57: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:15:57:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:15:57:     at new Promise (<anonymous>) {
+2026-04-06 15:15:57:   code: 'EADDRINUSE',
+2026-04-06 15:15:57:   errno: -98,
+2026-04-06 15:15:57:   syscall: 'listen',
+2026-04-06 15:15:57:   address: '::',
+2026-04-06 15:15:57:   port: 3000
+2026-04-06 15:15:57: }
+2026-04-06 15:15:58:  ⨯ Failed to start server
+2026-04-06 15:15:58: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:15:58:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:15:58:     at new Promise (<anonymous>) {
+2026-04-06 15:15:58:   code: 'EADDRINUSE',
+2026-04-06 15:15:58:   errno: -98,
+2026-04-06 15:15:58:   syscall: 'listen',
+2026-04-06 15:15:58:   address: '::',
+2026-04-06 15:15:58:   port: 3000
+2026-04-06 15:15:58: }
+2026-04-06 15:15:58:  ⨯ Failed to start server
+2026-04-06 15:15:58: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:15:58:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:15:58:     at new Promise (<anonymous>) {
+2026-04-06 15:15:58:   code: 'EADDRINUSE',
+2026-04-06 15:15:58:   errno: -98,
+2026-04-06 15:15:58:   syscall: 'listen',
+2026-04-06 15:15:58:   address: '::',
+2026-04-06 15:15:58:   port: 3000
+2026-04-06 15:15:58: }
+2026-04-06 15:15:59:  ⨯ Failed to start server
+2026-04-06 15:15:59: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:15:59:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:15:59:     at new Promise (<anonymous>) {
+2026-04-06 15:15:59:   code: 'EADDRINUSE',
+2026-04-06 15:15:59:   errno: -98,
+2026-04-06 15:15:59:   syscall: 'listen',
+2026-04-06 15:15:59:   address: '::',
+2026-04-06 15:15:59:   port: 3000
+2026-04-06 15:15:59: }
+2026-04-06 15:16:00:  ⨯ Failed to start server
+2026-04-06 15:16:00: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:00:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:00:     at new Promise (<anonymous>) {
+2026-04-06 15:16:00:   code: 'EADDRINUSE',
+2026-04-06 15:16:00:   errno: -98,
+2026-04-06 15:16:00:   syscall: 'listen',
+2026-04-06 15:16:00:   address: '::',
+2026-04-06 15:16:00:   port: 3000
+2026-04-06 15:16:00: }
+2026-04-06 15:16:00:  ⨯ Failed to start server
+2026-04-06 15:16:00: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:00:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:00:     at new Promise (<anonymous>) {
+2026-04-06 15:16:00:   code: 'EADDRINUSE',
+2026-04-06 15:16:00:   errno: -98,
+2026-04-06 15:16:00:   syscall: 'listen',
+2026-04-06 15:16:00:   address: '::',
+2026-04-06 15:16:00:   port: 3000
+2026-04-06 15:16:00: }
+2026-04-06 15:16:01:  ⨯ Failed to start server
+2026-04-06 15:16:01: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:01:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:01:     at new Promise (<anonymous>) {
+2026-04-06 15:16:01:   code: 'EADDRINUSE',
+2026-04-06 15:16:01:   errno: -98,
+2026-04-06 15:16:01:   syscall: 'listen',
+2026-04-06 15:16:01:   address: '::',
+2026-04-06 15:16:01:   port: 3000
+2026-04-06 15:16:01: }
+2026-04-06 15:16:01:  ⨯ Failed to start server
+2026-04-06 15:16:01: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:01:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:01:     at new Promise (<anonymous>) {
+2026-04-06 15:16:01:   code: 'EADDRINUSE',
+2026-04-06 15:16:01:   errno: -98,
+2026-04-06 15:16:01:   syscall: 'listen',
+2026-04-06 15:16:01:   address: '::',
+2026-04-06 15:16:01:   port: 3000
+2026-04-06 15:16:01: }
+2026-04-06 15:16:02:  ⨯ Failed to start server
+2026-04-06 15:16:02: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:02:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:02:     at new Promise (<anonymous>) {
+2026-04-06 15:16:02:   code: 'EADDRINUSE',
+2026-04-06 15:16:02:   errno: -98,
+2026-04-06 15:16:02:   syscall: 'listen',
+2026-04-06 15:16:02:   address: '::',
+2026-04-06 15:16:02:   port: 3000
+2026-04-06 15:16:02: }
+2026-04-06 15:16:22:  ⨯ Failed to start server
+2026-04-06 15:16:22: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:22:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:22:     at new Promise (<anonymous>) {
+2026-04-06 15:16:22:   code: 'EADDRINUSE',
+2026-04-06 15:16:22:   errno: -98,
+2026-04-06 15:16:22:   syscall: 'listen',
+2026-04-06 15:16:22:   address: '::',
+2026-04-06 15:16:22:   port: 3000
+2026-04-06 15:16:22: }
+2026-04-06 15:16:22:  ⨯ Failed to start server
+2026-04-06 15:16:22: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:22:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:22:     at new Promise (<anonymous>) {
+2026-04-06 15:16:22:   code: 'EADDRINUSE',
+2026-04-06 15:16:22:   errno: -98,
+2026-04-06 15:16:22:   syscall: 'listen',
+2026-04-06 15:16:22:   address: '::',
+2026-04-06 15:16:22:   port: 3000
+2026-04-06 15:16:22: }
+2026-04-06 15:16:23:  ⨯ Failed to start server
+2026-04-06 15:16:23: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:23:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:23:     at new Promise (<anonymous>) {
+2026-04-06 15:16:23:   code: 'EADDRINUSE',
+2026-04-06 15:16:23:   errno: -98,
+2026-04-06 15:16:23:   syscall: 'listen',
+2026-04-06 15:16:23:   address: '::',
+2026-04-06 15:16:23:   port: 3000
+2026-04-06 15:16:23: }
+2026-04-06 15:16:23:  ⨯ Failed to start server
+2026-04-06 15:16:23: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:23:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:23:     at new Promise (<anonymous>) {
+2026-04-06 15:16:23:   code: 'EADDRINUSE',
+2026-04-06 15:16:23:   errno: -98,
+2026-04-06 15:16:23:   syscall: 'listen',
+2026-04-06 15:16:23:   address: '::',
+2026-04-06 15:16:23:   port: 3000
+2026-04-06 15:16:23: }
+2026-04-06 15:16:24:  ⨯ Failed to start server
+2026-04-06 15:16:24: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:24:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:24:     at new Promise (<anonymous>) {
+2026-04-06 15:16:24:   code: 'EADDRINUSE',
+2026-04-06 15:16:24:   errno: -98,
+2026-04-06 15:16:24:   syscall: 'listen',
+2026-04-06 15:16:24:   address: '::',
+2026-04-06 15:16:24:   port: 3000
+2026-04-06 15:16:24: }
+2026-04-06 15:16:25:  ⨯ Failed to start server
+2026-04-06 15:16:25: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:25:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:25:     at new Promise (<anonymous>) {
+2026-04-06 15:16:25:   code: 'EADDRINUSE',
+2026-04-06 15:16:25:   errno: -98,
+2026-04-06 15:16:25:   syscall: 'listen',
+2026-04-06 15:16:25:   address: '::',
+2026-04-06 15:16:25:   port: 3000
+2026-04-06 15:16:25: }
+2026-04-06 15:16:25:  ⨯ Failed to start server
+2026-04-06 15:16:25: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:25:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:25:     at new Promise (<anonymous>) {
+2026-04-06 15:16:25:   code: 'EADDRINUSE',
+2026-04-06 15:16:25:   errno: -98,
+2026-04-06 15:16:25:   syscall: 'listen',
+2026-04-06 15:16:25:   address: '::',
+2026-04-06 15:16:25:   port: 3000
+2026-04-06 15:16:25: }
+2026-04-06 15:16:26:  ⨯ Failed to start server
+2026-04-06 15:16:26: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:26:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:26:     at new Promise (<anonymous>) {
+2026-04-06 15:16:26:   code: 'EADDRINUSE',
+2026-04-06 15:16:26:   errno: -98,
+2026-04-06 15:16:26:   syscall: 'listen',
+2026-04-06 15:16:26:   address: '::',
+2026-04-06 15:16:26:   port: 3000
+2026-04-06 15:16:26: }
+2026-04-06 15:16:26:  ⨯ Failed to start server
+2026-04-06 15:16:26: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:26:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:26:     at new Promise (<anonymous>) {
+2026-04-06 15:16:26:   code: 'EADDRINUSE',
+2026-04-06 15:16:26:   errno: -98,
+2026-04-06 15:16:26:   syscall: 'listen',
+2026-04-06 15:16:26:   address: '::',
+2026-04-06 15:16:26:   port: 3000
+2026-04-06 15:16:26: }
+2026-04-06 15:16:27:  ⨯ Failed to start server
+2026-04-06 15:16:27: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:16:27:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:16:27:     at new Promise (<anonymous>) {
+2026-04-06 15:16:27:   code: 'EADDRINUSE',
+2026-04-06 15:16:27:   errno: -98,
+2026-04-06 15:16:27:   syscall: 'listen',
+2026-04-06 15:16:27:   address: '::',
+2026-04-06 15:16:27:   port: 3000
+2026-04-06 15:16:27: }
+2026-04-06 15:18:18:  ⨯ Failed to start server
+2026-04-06 15:18:18: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:18:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:18:     at new Promise (<anonymous>) {
+2026-04-06 15:18:18:   code: 'EADDRINUSE',
+2026-04-06 15:18:18:   errno: -98,
+2026-04-06 15:18:18:   syscall: 'listen',
+2026-04-06 15:18:18:   address: '::',
+2026-04-06 15:18:18:   port: 3000
+2026-04-06 15:18:18: }
+2026-04-06 15:18:19:  ⨯ Failed to start server
+2026-04-06 15:18:19: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:19:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:19:     at new Promise (<anonymous>) {
+2026-04-06 15:18:19:   code: 'EADDRINUSE',
+2026-04-06 15:18:19:   errno: -98,
+2026-04-06 15:18:19:   syscall: 'listen',
+2026-04-06 15:18:19:   address: '::',
+2026-04-06 15:18:19:   port: 3000
+2026-04-06 15:18:19: }
+2026-04-06 15:18:20:  ⨯ Failed to start server
+2026-04-06 15:18:20: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:20:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:20:     at new Promise (<anonymous>) {
+2026-04-06 15:18:20:   code: 'EADDRINUSE',
+2026-04-06 15:18:20:   errno: -98,
+2026-04-06 15:18:20:   syscall: 'listen',
+2026-04-06 15:18:20:   address: '::',
+2026-04-06 15:18:20:   port: 3000
+2026-04-06 15:18:20: }
+2026-04-06 15:18:20:  ⨯ Failed to start server
+2026-04-06 15:18:20: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:20:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:20:     at new Promise (<anonymous>) {
+2026-04-06 15:18:20:   code: 'EADDRINUSE',
+2026-04-06 15:18:20:   errno: -98,
+2026-04-06 15:18:20:   syscall: 'listen',
+2026-04-06 15:18:20:   address: '::',
+2026-04-06 15:18:20:   port: 3000
+2026-04-06 15:18:20: }
+2026-04-06 15:18:21:  ⨯ Failed to start server
+2026-04-06 15:18:21: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:21:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:21:     at new Promise (<anonymous>) {
+2026-04-06 15:18:21:   code: 'EADDRINUSE',
+2026-04-06 15:18:21:   errno: -98,
+2026-04-06 15:18:21:   syscall: 'listen',
+2026-04-06 15:18:21:   address: '::',
+2026-04-06 15:18:21:   port: 3000
+2026-04-06 15:18:21: }
+2026-04-06 15:18:21:  ⨯ Failed to start server
+2026-04-06 15:18:21: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:21:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:21:     at new Promise (<anonymous>) {
+2026-04-06 15:18:21:   code: 'EADDRINUSE',
+2026-04-06 15:18:21:   errno: -98,
+2026-04-06 15:18:21:   syscall: 'listen',
+2026-04-06 15:18:21:   address: '::',
+2026-04-06 15:18:21:   port: 3000
+2026-04-06 15:18:21: }
+2026-04-06 15:18:22:  ⨯ Failed to start server
+2026-04-06 15:18:22: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:22:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:22:     at new Promise (<anonymous>) {
+2026-04-06 15:18:22:   code: 'EADDRINUSE',
+2026-04-06 15:18:22:   errno: -98,
+2026-04-06 15:18:22:   syscall: 'listen',
+2026-04-06 15:18:22:   address: '::',
+2026-04-06 15:18:22:   port: 3000
+2026-04-06 15:18:22: }
+2026-04-06 15:18:23:  ⨯ Failed to start server
+2026-04-06 15:18:23: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:23:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:23:     at new Promise (<anonymous>) {
+2026-04-06 15:18:23:   code: 'EADDRINUSE',
+2026-04-06 15:18:23:   errno: -98,
+2026-04-06 15:18:23:   syscall: 'listen',
+2026-04-06 15:18:23:   address: '::',
+2026-04-06 15:18:23:   port: 3000
+2026-04-06 15:18:23: }
+2026-04-06 15:18:23:  ⨯ Failed to start server
+2026-04-06 15:18:23: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:23:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:23:     at new Promise (<anonymous>) {
+2026-04-06 15:18:23:   code: 'EADDRINUSE',
+2026-04-06 15:18:23:   errno: -98,
+2026-04-06 15:18:23:   syscall: 'listen',
+2026-04-06 15:18:23:   address: '::',
+2026-04-06 15:18:23:   port: 3000
+2026-04-06 15:18:23: }
+2026-04-06 15:18:24:  ⨯ Failed to start server
+2026-04-06 15:18:24: Error: listen EADDRINUSE: address already in use :::3000
+2026-04-06 15:18:24:     at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+2026-04-06 15:18:24:     at new Promise (<anonymous>) {
+2026-04-06 15:18:24:   code: 'EADDRINUSE',
+2026-04-06 15:18:24:   errno: -98,
+2026-04-06 15:18:24:   syscall: 'listen',
+2026-04-06 15:18:24:   address: '::',
+2026-04-06 15:18:24:   port: 3000
+2026-04-06 15:18:24: }
