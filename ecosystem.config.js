@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "neron-client",
+      name: "neron-mobile",
       script: "npm",
       args: "start",
       cwd: "./",
@@ -11,7 +11,7 @@ module.exports = {
       max_restarts: 10,
       env: {
         NODE_ENV: "production",
-        PROD: 3000,
+        PROD: 3002,
       },
       out_file: "./logs/neron-out.log",
       error_file: "./logs/neron-error.log",
