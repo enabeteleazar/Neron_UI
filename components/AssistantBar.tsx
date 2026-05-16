@@ -7,26 +7,30 @@ interface AssistantBarProps {
   onSend: (text: string) => void;
   isStreaming: boolean;
   status: ConnectionStatus;
+  isListening: boolean;
+  onToggleListening: () => void;
 }
 
 const STATUS_LABEL: Record<ConnectionStatus, string> = {
-  connecting:   "Connexion…",
-  connected:    "Néron",
+  connecting: "Connexion…",
+  connected: "Néron",
   disconnected: "Déconnecté",
-  error:        "Erreur",
+  error: "Erreur",
 };
 
 const STATUS_DOT: Record<ConnectionStatus, string> = {
-  connecting:   "bg-amber-400 neron-pulse",
-  connected:    "bg-cyan-400",
+  connecting: "bg-amber-400 neron-pulse",
+  connected: "bg-cyan-400",
   disconnected: "bg-white/20",
-  error:        "bg-red-400",
+  error: "bg-red-400",
 };
 
 export default function AssistantBar({
   onSend,
   isStreaming,
   status,
+  isListening,
+  onToggleListening,
 }: AssistantBarProps) {
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,12 +58,16 @@ export default function AssistantBar({
 
   return (
     <div className="flex flex-col gap-2 border-t border-white/[0.06] px-4 py-3">
-      {/* Indicateur statut */}
       <div className="flex items-center gap-2">
         <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
         <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">
           {STATUS_LABEL[status]}
         </span>
+        {isListening && (
+          <span className="ml-auto text-[10px] uppercase tracking-wider text-emerald-300/70">
+            micro actif…
+          </span>
+        )}
         {isStreaming && (
           <span className="ml-auto text-[10px] uppercase tracking-wider text-cyan-400/50">
             écriture…
@@ -67,7 +75,6 @@ export default function AssistantBar({
         )}
       </div>
 
-      {/* Input */}
       <div
         className={`flex items-center gap-2 rounded-xl border px-3.5 py-2.5 transition-colors duration-200 ${
           status === "connected"
@@ -75,6 +82,19 @@ export default function AssistantBar({
             : "border-white/[0.04] bg-white/[0.02] opacity-50"
         }`}
       >
+        <button
+          type="button"
+          onClick={onToggleListening}
+          disabled={status !== "connected"}
+          aria-label="Activer la conversation vocale"
+          className={`flex h-7 w-7 items-center justify-center rounded-lg transition-all ${
+            isListening
+              ? "bg-emerald-500/25 text-emerald-300"
+              : "bg-white/5 text-white/60 hover:bg-white/10"
+          }`}
+        >
+          <MicIcon />
+        </button>
         <input
           ref={inputRef}
           type="text"
@@ -115,6 +135,15 @@ function SendIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+function MicIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 15a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Z" stroke="currentColor" strokeWidth="1.8"/>
+      <path d="M19 11a7 7 0 0 1-14 0M12 18v3M8 21h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
     </svg>
   );
 }
